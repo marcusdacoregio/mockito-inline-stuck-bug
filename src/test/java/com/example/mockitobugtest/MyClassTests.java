@@ -5,8 +5,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.context.annotation.Configuration;
 
 @SpringBootTest(classes = MyClassTests.Stub.class)
 public class MyClassTests {
@@ -22,8 +21,9 @@ public class MyClassTests {
 		String value = myClass.doIt();
 	}
 
-	@EnableWebSecurity
-	public static class Stub extends WebSecurityConfigurerAdapter {
+	@Configuration
+	public static class Stub {
+
 		private static final MyOtherClass myOtherClass = Mockito.mock(MyOtherClass.class);
 		// and it works if you use the line below instead of the line above
 //		 private MyOtherClass myOtherClass = Mockito.mock(MyOtherClass.class);
