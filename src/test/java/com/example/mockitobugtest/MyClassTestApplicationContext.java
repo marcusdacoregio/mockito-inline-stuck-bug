@@ -11,28 +11,45 @@ import org.springframework.context.support.GenericApplicationContext;
 public class MyClassTestApplicationContext {
 
 	@Test
-	public void doIt() {
+	public void dontStuck() {
 		GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
-		beanDefinition.setBeanClass(Stub.myOtherClass.getClass());
-		beanDefinition.setSource(Stub.myOtherClass);
+		beanDefinition.setBeanClass(StuckConfig.myOtherClass.getClass());
+		beanDefinition.setSource(StuckConfig.myOtherClass);
 		GenericApplicationContext context = new GenericApplicationContext();
 		context.registerBeanDefinition("myOtherClass", beanDefinition);
 		context.refresh();
 	}
 
 	@Test
-	public void doItStuck() {
+	public void dontStuckAlso() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		context.register(Stub.class);
+		context.register(DontStuckConfig.class);
+		context.refresh();
+		context.getBean(MyOtherClass.class);
+	}
+
+	@Test
+	public void stuck() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		context.register(StuckConfig.class);
 		context.refresh();
 	}
 
 	@Configuration
-	public static class Stub {
+	public static class StuckConfig {
 
 		private static final MyOtherClass myOtherClass = Mockito.mock(MyOtherClass.class);
-		// and it works if you use the line below instead of the line above
-//		 private MyOtherClass myOtherClass = Mockito.mock(MyOtherClass.class);
+
+		@Bean
+		public MyOtherClass myOtherClass() {
+			return myOtherClass;
+		}
+	}
+
+	@Configuration
+	public static class DontStuckConfig {
+
+		private final MyOtherClass myOtherClass = Mockito.mock(MyOtherClass.class);
 
 		@Bean
 		public MyOtherClass myOtherClass() {
