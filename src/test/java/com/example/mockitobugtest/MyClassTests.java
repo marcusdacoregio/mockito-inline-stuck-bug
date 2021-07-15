@@ -17,8 +17,6 @@ public class MyClassTests {
 
 	@Test
 	public void doIt() {
-		MyClass myClass = new MyClass(myOtherClass);
-		String value = myClass.doIt();
 	}
 
 	@Configuration

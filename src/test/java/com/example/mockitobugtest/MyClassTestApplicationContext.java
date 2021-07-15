@@ -18,8 +18,6 @@ public class MyClassTestApplicationContext {
 		GenericApplicationContext context = new GenericApplicationContext();
 		context.registerBeanDefinition("myOtherClass", beanDefinition);
 		context.refresh();
-		MyOtherClass myOtherClass = context.getBean(MyOtherClass.class);
-		MyClass myClass = new MyClass(myOtherClass);
 	}
 
 	@Test
@@ -27,8 +25,6 @@ public class MyClassTestApplicationContext {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		context.register(Stub.class);
 		context.refresh();
-		MyOtherClass myOtherClass = context.getBean(MyOtherClass.class);
-		MyClass myClass = new MyClass(myOtherClass);
 	}
 
 	@Configuration
@@ -38,7 +34,7 @@ public class MyClassTestApplicationContext {
 		// and it works if you use the line below instead of the line above
 //		 private MyOtherClass myOtherClass = Mockito.mock(MyOtherClass.class);
 
-		@Bean(name = "myOtherClass")
+		@Bean
 		public MyOtherClass myOtherClass() {
 			return myOtherClass;
 		}
